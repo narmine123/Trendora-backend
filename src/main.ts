@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();  // Charger les variables d'environnement avant tout autre code
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';

@@ -5,12 +5,14 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { LoginCredentialsDTO } from './dto/LoginCredentialsDTO';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private jwtService: JwtService
   ) {}
 
   async register(userData: UserSubscribeDto): Promise<Partial<User>> {
@@ -45,15 +47,15 @@ export class UserService {
     };
   }
 
-    async login (credentials : LoginCredentialsDTO):Promise<Partial<User>>{
+    async login (credentials : LoginCredentialsDTO){
       //récupérer le login et mdp
       const {name, password} = credentials;
       //on peut se loger ou via le username ou le password
       //verifier est ce qu'il ya un user avec ce login ou ce mdp
       const user = await this.userRepository.createQueryBuilder("user")
-  .where("user.name = :name or user.password = :password", { name, password })
-  .getOne();
-//pour récupérer one entité
+    .where("user.name = :name or user.password = :password", { name, password })
+    .getOne();
+      //pour récupérer one entité
       //si not user je déclenche une erreur
       console.log(user);
       if (!user){
@@ -62,11 +64,19 @@ export class UserService {
       //si oui je verifie est ce que le mdp est correct ou pas
       const hashedPassword = await  bcrypt.hash(password, user.salt);
       if (hashedPassword === user.password) {
-        return  {
-          name,
+
+        const payload = {
+          name: user.name,
           email:user.email,
           role:user.role
         }
+        /*construire token avec sign*/
+        const jwt = this.jwtService.sign(payload)
+        
+        
+        return  {
+          "access_token" : jwt
+        } ;
 
       } else {
         //si mdp incorrecte je déclenche une erreur

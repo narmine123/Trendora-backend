@@ -1,14 +1,24 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './user.module';
+import * as dotenv from 'dotenv';
+import { UserService } from './user.service';
+import { JwtStrategy } from './strategy/passport-jwt.strategy';
+import { UserController } from './user.controller';
+import { ConfigModule } from '@nestjs/config';
 
+// Charger les variables d'environnement depuis .env
+dotenv.config();
+console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à vérifier si la variable est bien chargée
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // Rendre le module global
+      envFilePath: '.env', // Charger les variables depuis .env
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -17,23 +27,23 @@ import { UserModule } from './user.module';
       password: 'root123',
       database: 'authentification',
       entities: [User],
-      synchronize: true ,//cad chaque modifié appliqué sera ajouté au bd
+      synchronize: true,
       autoLoadEntities: true,
       logging: true,
-      driver: require('mysql2'), // Specify mysql2
-
-      //dropSchema: true, // Supprime les tables avant de recréer le schéma
-
+      driver: require('mysql2'),
+      
     }),
     TypeOrmModule.forFeature([User]),
-     JwtModule.register({
-      secret:'secret',
-      signOptions:{expiresIn: '1d'}
-     }),
-     UserModule
-  
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,  // Utilisez la clé secrète depuis les variables d'environnement
+      signOptions: { expiresIn: 3600 },  // Option d'expiration
+    }),
+    UserModule,
+    
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [UserController],
+  providers: [UserService, JwtStrategy ],
+  exports: [JwtStrategy],
+
 })
 export class AppModule {}
