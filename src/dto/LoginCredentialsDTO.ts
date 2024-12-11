@@ -5,7 +5,7 @@ import { IsNotEmpty } from "class-validator";
 export class LoginCredentialsDTO {
     
     @IsNotEmpty()
-    name : string;
+    email : string;
     
     @IsNotEmpty()
     password : string;
