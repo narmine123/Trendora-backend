@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),// to extract the JWT token from the Authorization header of an HTTP request.
       ignoreExpiration: false,
       secretOrKey: jwtSecret, // Utilisation de la clé récupérée
     });

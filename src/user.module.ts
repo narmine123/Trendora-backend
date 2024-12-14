@@ -6,11 +6,12 @@ import { User } from './entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
+import { Profile } from './entities/profile.entity';
 dotenv.config();  // Charger les variables d'environnement à partir du fichier .env
 
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User]),
+    imports: [TypeOrmModule.forFeature([User, Profile]),
     PassportModule.register({
       defaultStrategy:'jwt'
     }),
