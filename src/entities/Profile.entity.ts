@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Profile {
@@ -23,5 +24,8 @@ export class Profile {
   @Column()
   adresselivraison: string;
 
- 
+  @OneToOne(() => User, user => user.profile)
+  user: User;  // Relation un-à-un avec l'utilisateur
 }
+ 
+

@@ -28,10 +28,11 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
       password: 'root123',
       database: 'authentification',
       entities: [User,Profile],
-      synchronize: true,
       autoLoadEntities: true,
-      logging: true,
       driver: require('mysql2'),
+      synchronize:true,
+      //dropSchema: true, // Supprime les tables avant de recréer le schéma
+
       
     }),
     TypeOrmModule.forFeature([User,Profile]),
