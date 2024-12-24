@@ -9,6 +9,8 @@ import { JwtStrategy } from './strategy/passport-jwt.strategy';
 import { UserController } from './user.controller';
 import { ConfigModule } from '@nestjs/config';
 import { Profile } from './entities/profile.entity';
+import { CartModule } from './cart/cart.module';
+import { CartItemsModule } from './cart-items/cart-items.module';
 
 // Charger les variables d'environnement depuis .env
 dotenv.config();
@@ -27,25 +29,23 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
       username: 'root',
       password: 'root123',
       database: 'authentification',
-      entities: [User,Profile],
+      entities: [User, Profile],
       autoLoadEntities: true,
       driver: require('mysql2'),
-      synchronize:true,
+      synchronize: true,
       //dropSchema: true, // Supprime les tables avant de recréer le schéma
-
-      
     }),
-    TypeOrmModule.forFeature([User,Profile]),
+    TypeOrmModule.forFeature([User, Profile]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET,  // Utilisez la clé secrète depuis les variables d'environnement
-      signOptions: { expiresIn: 3600 },  // Option d'expiration
+      secret: process.env.JWT_SECRET, // Utilisez la clé secrète depuis les variables d'environnement
+      signOptions: { expiresIn: 3600 }, // Option d'expiration
     }),
     UserModule,
-    
+    CartModule,
+    CartItemsModule,
   ],
   controllers: [UserController],
-  providers: [UserService, JwtStrategy ],
+  providers: [UserService, JwtStrategy],
   exports: [JwtStrategy],
-
 })
 export class AppModule {}
