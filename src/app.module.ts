@@ -9,6 +9,8 @@ import { JwtStrategy } from './strategy/passport-jwt.strategy';
 import { UserController } from './user.controller';
 import { ConfigModule } from '@nestjs/config';
 import { Profile } from './entities/profile.entity';
+import { OrderController } from './order/order.controller';
+import { OrderService } from './order/order.service';
 
 // Charger les variables d'environnement depuis .env
 dotenv.config();
@@ -25,8 +27,8 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'root123',
-      database: 'authentification',
+      password: '0000',
+      database: 'trendora',
       entities: [User,Profile],
       autoLoadEntities: true,
       driver: require('mysql2'),
@@ -43,8 +45,8 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     UserModule,
     
   ],
-  controllers: [UserController],
-  providers: [UserService, JwtStrategy ],
+  controllers: [UserController, OrderController],
+  providers: [UserService, JwtStrategy, OrderService ],
   exports: [JwtStrategy],
 
 })
