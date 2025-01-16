@@ -9,7 +9,7 @@ import { JwtStrategy } from './strategy/passport-jwt.strategy';
 import { UserController } from './user.controller';
 import { ConfigModule } from '@nestjs/config';
 import { Profile } from './entities/profile.entity';
-import { CustomersModule } from './product/customers.module';
+import { ProductsModule} from './product/products.module';
 
 // Charger les variables d'environnement depuis .env
 dotenv.config();
@@ -41,7 +41,7 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
       signOptions: { expiresIn: 3600 },  // Option d'expiration
     }),
     UserModule,
-    CustomersModule,
+    ProductsModule,
     
   ],
   controllers: [UserController],

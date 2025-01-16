@@ -36,29 +36,29 @@
 //   }
 // }
 import { Controller, Get, Param, Post, Body, Put } from '@nestjs/common';
-import { CustomersService } from './customers.service';
+import { ProductsService } from './product.service';
 
-@Controller('customers')
-export class CustomersController {
-  constructor(private readonly customersService: CustomersService) {}
+@Controller('products')  // Updated route
+export class ProductsController {
+  constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  async getAllCustomers() {
-    return this.customersService.getAllCustomers();
+  async getAllProducts() {
+    return this.productsService.getAllProducts();
   }
 
   @Get(':id')
-  async getCustomer(@Param('id') id: number) {
-    return this.customersService.getCustomerById(id);
+  async getProduct(@Param('id') id: number) {
+    return this.productsService.getProductById(id);
   }
 
   @Post()
-  async addCustomer(@Body() customer: any) {
-    return this.customersService.addCustomer(customer);
+  async addProduct(@Body() product: any) {
+    return this.productsService.addProduct(product);
   }
 
   @Put(':id')
-  async updateCustomer(@Param('id') id: number, @Body() customer: any) {
-    return this.customersService.updateCustomer(id, customer);
+  async updateProduct(@Param('id') id: number, @Body() product: any) {
+    return this.productsService.updateProduct(id, product);
   }
 }

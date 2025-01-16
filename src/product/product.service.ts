@@ -53,28 +53,32 @@ import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';  
 
 @Injectable()
-export class CustomersService {
+export class ProductsService {
   private readonly apiUrl = 'https://fakestoreapi.com/products';
 
   constructor(private readonly httpService: HttpService) {}
 
-  async getAllCustomers(): Promise<any[]> {
+  // Get all products
+  async getAllProducts(): Promise<any[]> {
     const response = await lastValueFrom(this.httpService.get(this.apiUrl));  
     return response.data;
   }
 
-  async getCustomerById(id: number): Promise<any> {
+  // Get a single product by ID
+  async getProductById(id: number): Promise<any> {
     const response = await lastValueFrom(this.httpService.get(`${this.apiUrl}/${id}`));
     return response.data;
   }
 
-  async addCustomer(customer: any): Promise<any> {
-    const response = await lastValueFrom(this.httpService.post(this.apiUrl, customer));
+  // Add a new product
+  async addProduct(product: any): Promise<any> {
+    const response = await lastValueFrom(this.httpService.post(this.apiUrl, product));
     return response.data;
   }
 
-  async updateCustomer(id: number, customer: any): Promise<any> {
-    const response = await lastValueFrom(this.httpService.put(`${this.apiUrl}/${id}`, customer));
+  // Update an existing product
+  async updateProduct(id: number, product: any): Promise<any> {
+    const response = await lastValueFrom(this.httpService.put(`${this.apiUrl}/${id}`, product));
     return response.data;
   }
 }
