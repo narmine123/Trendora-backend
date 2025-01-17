@@ -20,7 +20,6 @@ export class UserService {
   ) {}
 
   async register(userData: UserSubscribeDto): Promise<Partial<User>> {
-
           // Check if the email already exists
           const existingUser = await this.userRepository.findOneBy({ email: userData.email });
           if (existingUser) {
@@ -29,7 +28,7 @@ export class UserService {
 
           // Create a new user entity
           const user = this.userRepository.create(userData);
-    
+
           // Generate a salt and hash the password(salt qui aide à crypter mdp)
           const salt = await bcrypt.genSalt();
           user.password = await bcrypt.hash(userData.password, salt);
@@ -49,7 +48,6 @@ export class UserService {
             name: user.name,
             email: user.email,
             role: user.role,
-
           };
   }
 
@@ -97,70 +95,5 @@ export class UserService {
           console.log('User crée : ' , newUser);
           return await this.profileRepository.save(newUser);
        }
-       
-
-       async hashPassword(password: string): Promise<string> {
-        const salt = await bcrypt.genSalt();
-        return bcrypt.hash(password, salt);
-      }
-
-      async updatePassword(Id: string, hashedPassword: string): Promise<void> {
-        await this.userRepository.update(Id, { password: hashedPassword });
-      }
       
-
-      async findByEmail(email: string): Promise<User> {
-        const user = await this.userRepository.findOne({
-          where: { email: email },
-        });
-    
-        if (!user) {
-          throw new NotFoundException('Utilisateur non trouvé');
-        }
-    
-        return user;
-      }
-
-    
-
-
-async getUserWithProfile(id: number): Promise<User> {
-  const user = await this.userRepository
-    .createQueryBuilder('user')
-    .leftJoinAndSelect('user.profile', 'profile')
-    .where('user.id = :id', { id })
-    .getOne();
-
-  if (!user) {
-    throw new Error('User not found');
-  }
-
-  return user; // Le profil sera inclus si la relation est correctement configurée
 }
-
-
-async getProfileById(profileId: number): Promise<Profile> {
-  const profile = await this.profileRepository.findOne({
-    where: { id: profileId },
-  });
-
-  if (!profile) {
-    throw new Error(`Profile avec l'id ${profileId} n'existe pas`);
-  }
-
-  return profile;
-}
-
-
-
-
-
-  
-
-
-  
-  
-  
-  
-  
-  } 
