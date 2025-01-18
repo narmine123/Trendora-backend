@@ -11,6 +11,9 @@ import { ConfigModule } from '@nestjs/config';
 import { Profile } from './entities/profile.entity';
 import { CartModule } from './cart/cart.module';
 import { CartItemsModule } from './cart-items/cart-items.module';
+import { Review } from './reviews/review.entity';
+import { ReviewModule } from './reviews/reviews.module';
+
 
 // Charger les variables d'environnement depuis .env
 dotenv.config();
@@ -29,7 +32,7 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
       username: 'root',
       password: 'root123',
       database: 'authentification',
-      entities: [User, Profile],
+      entities: [User, Profile , Review],
       autoLoadEntities: true,
       driver: require('mysql2'),
       synchronize: true,
@@ -43,6 +46,7 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     UserModule,
     CartModule,
     CartItemsModule,
+    ReviewModule,
   ],
   controllers: [UserController],
   providers: [UserService, JwtStrategy],
