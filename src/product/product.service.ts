@@ -51,34 +51,41 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';  
+import { Product } from './product.entity';
 
 @Injectable()
 export class ProductsService {
-  private readonly apiUrl = 'https://fakestoreapi.com/products';
+  private readonly apiUrl = 'http://localhost:3000/products';
 
   constructor(private readonly httpService: HttpService) {}
 
   // Get all products
-  async getAllProducts(): Promise<any[]> {
-    const response = await lastValueFrom(this.httpService.get(this.apiUrl));  
+  async getAllProducts(): Promise<Product[]> {
+    const response = await lastValueFrom(this.httpService.get(this.apiUrl));
     return response.data;
   }
 
   // Get a single product by ID
-  async getProductById(id: number): Promise<any> {
-    const response = await lastValueFrom(this.httpService.get(`${this.apiUrl}/${id}`));
+  async getProductById(id: number): Promise<Product> {
+    const response = await lastValueFrom(
+      this.httpService.get(`${this.apiUrl}/${id}`),
+    );
     return response.data;
   }
 
   // Add a new product
-  async addProduct(product: any): Promise<any> {
-    const response = await lastValueFrom(this.httpService.post(this.apiUrl, product));
+  async addProduct(product: Product): Promise<Product> {
+    const response = await lastValueFrom(
+      this.httpService.post(this.apiUrl, product),
+    );
     return response.data;
   }
 
   // Update an existing product
-  async updateProduct(id: number, product: any): Promise<any> {
-    const response = await lastValueFrom(this.httpService.put(`${this.apiUrl}/${id}`, product));
+  async updateProduct(id: number, product: Product): Promise<Product> {
+    const response = await lastValueFrom(
+      this.httpService.put(`${this.apiUrl}/${id}`, product),
+    );
     return response.data;
   }
 }
