@@ -7,7 +7,7 @@ export class CartItem {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Cart, (cart) => cart.CartItem)
+  @ManyToOne(() => Cart, (cart) => cart.cartItems)
   cart: Cart;
 
   @ManyToOne(() => Product)

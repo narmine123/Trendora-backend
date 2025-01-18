@@ -11,6 +11,8 @@ import { ConfigModule } from '@nestjs/config';
 import { Profile } from './entities/profile.entity';
 import { ProductsModule} from './product/products.module';
 import { Cart } from './cart/entities/cart.entity';
+import { CartModule } from './cart/cart.module';
+
 import { CartItem } from './cart-item/entities/cart-item.entity';
 import { Product } from './product/product.entity';
 
@@ -46,6 +48,7 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     }),
     UserModule,
     ProductsModule,
+    CartModule
   ],
   controllers: [UserController],
   providers: [UserService, JwtStrategy],

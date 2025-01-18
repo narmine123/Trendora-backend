@@ -35,7 +35,7 @@ export class CartService {
       // Create new cart with proper typing
       const newCart = new Cart();
       newCart.user = { id: user.id } as User;
-      newCart.CartItem = []; // Match the entity property name
+      newCart.cartItems = []; // Match the entity property name
 
       cart = await this.cartRepository.save(newCart);
     }

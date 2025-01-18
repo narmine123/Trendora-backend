@@ -12,8 +12,8 @@ import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { RemoveFromCartDTO } from './dto/remove-from-cart.dto';
-//import { AuthGuard } from '@nestjs/passport';
-//import { ACGuard, UseRoles } from 'nest-access-control';
+import { AuthGuard } from '@nestjs/passport';
+
 import { CurrentUser } from 'src/decorators/user.decorator';
 import { User } from 'src/entities/user.entity';
 
@@ -22,24 +22,15 @@ export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Get()
-  //@UseGuards(AuthGuard('jwt'), ACGuard)
-  /*@UseRoles({
-    possession: 'own',
-    action: 'read',
-    resource: 'cart',
-  })
-  */
+  @UseGuards(AuthGuard('jwt'))
+
   async getUserCart(@CurrentUser() user: User) {
     return await this.cartService.getUserCart(user);
   }
 
   @Post('add')
-  //@UseGuards(AuthGuard('jwt'), ACGuard)
-  /*@UseRoles({
-    possession: 'own',
-    action: 'create',
-    resource: 'cart',
-  })*/
+  @UseGuards(AuthGuard('jwt'))
+
 
   async addToCart(
     @Body() createCartItemDto: CreateCartDto,
@@ -49,12 +40,7 @@ export class CartController {
   }
 
   @Delete('remove')
-  //@UseGuards(AuthGuard('jwt'), ACGuard)
-  /*@UseRoles({
-    possession: 'own',
-    action: 'delete',
-    resource: 'cart',
-  })*/
+  @UseGuards(AuthGuard('jwt'))
 
   async removeFromCart(
     @Body() removeCartDto: RemoveFromCartDTO,
@@ -64,12 +50,7 @@ export class CartController {
   }
 
   @Patch('update')
-  //@UseGuards(AuthGuard('jwt'), ACGuard)
-  /*@UseRoles({
-    possession: 'own',
-    action: 'update',
-    resource: 'cart',
-  })*/
+  @UseGuards(AuthGuard('jwt'))
 
   async updateItemQuantityFromCart(
     @Body() updateCartDto: UpdateCartDto,

@@ -55,7 +55,7 @@ import { Product } from './product.entity';
 
 @Injectable()
 export class ProductsService {
-  private readonly apiUrl = 'http://localhost:3000/products';
+  private readonly apiUrl = 'https://fakestoreapi.com/products';
 
   constructor(private readonly httpService: HttpService) {}
 
