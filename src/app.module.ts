@@ -10,6 +10,10 @@ import { UserController } from './user.controller';
 import { ConfigModule } from '@nestjs/config';
 import { Profile } from './entities/profile.entity';
 import { ProductsModule} from './product/products.module';
+import { Cart } from './cart/entities/cart.entity';
+import { CartItem } from './cart-item/entities/cart-item.entity';
+import { Product } from './product/product.entity';
+
 
 // Charger les variables d'environnement depuis .env
 dotenv.config();
@@ -23,30 +27,28 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root123',
-      database: 'authentification',
-      entities: [User,Profile],
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      entities: [User, Profile, ],
       synchronize: true,
       autoLoadEntities: true,
       logging: true,
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       driver: require('mysql2'),
-      
     }),
-    TypeOrmModule.forFeature([User,Profile]),
+    TypeOrmModule.forFeature([User, Profile,Product,Cart,CartItem]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET,  // Utilisez la clé secrète depuis les variables d'environnement
-      signOptions: { expiresIn: 3600 },  // Option d'expiration
+      secret: process.env.JWT_SECRET, // Utilisez la clé secrète depuis les variables d'environnement
+      signOptions: { expiresIn: 3600 }, // Option d'expiration
     }),
     UserModule,
     ProductsModule,
-    
   ],
   controllers: [UserController],
-  providers: [UserService, JwtStrategy ],
+  providers: [UserService, JwtStrategy],
   exports: [JwtStrategy],
-
 })
 export class AppModule {}
