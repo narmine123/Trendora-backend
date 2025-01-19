@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { UserRoleEnum } from 'src/enums/user.enum';
 import { Profile } from './profile.entity';
+import { Review } from '../reviews/review.entity';
 
 @Entity('users')
 export class User {
@@ -29,4 +30,10 @@ export class User {
   @OneToOne(() => Profile, { cascade: true })
   @JoinColumn()
   profile: Profile; // Relation un-à-un avec le profil
+
+  
+
+@OneToMany(() => Review, (review) => review.user)
+reviews: Review[];
+
 }
