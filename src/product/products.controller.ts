@@ -36,9 +36,10 @@
 //   }
 // }
 import { Controller, Get, Param, Post, Body, Put } from '@nestjs/common';
-import { ProductsService } from './product.service';
+import { ProductsService } from './product.service'; 
+import { Product } from './product.entity';
 
-@Controller('products')  // Updated route
+@Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
@@ -49,16 +50,16 @@ export class ProductsController {
 
   @Get(':id')
   async getProduct(@Param('id') id: number) {
-    return this.productsService.getProductById(id);
+    return this.productsService.getProductById(+id);
   }
 
   @Post()
-  async addProduct(@Body() product: any) {
+  async addProduct(@Body() product: Product) {
     return this.productsService.addProduct(product);
   }
 
   @Put(':id')
-  async updateProduct(@Param('id') id: number, @Body() product: any) {
+  async updateProduct(@Param('id') id: number, @Body() product: Partial<Product>) {
     return this.productsService.updateProduct(id, product);
   }
 }
