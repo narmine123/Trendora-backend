@@ -23,7 +23,6 @@ export class CartItemService {
   ) {}
 
   async addCartItem(createCartItemDto: CreateCartItemDto) {
-    // Find the product to associate with the cart item
     const product = await this.productRepository.findOne({
       where: { id: createCartItemDto.productId },
     });
@@ -32,18 +31,17 @@ export class CartItemService {
       throw new BadRequestException('Product not found');
     }
 
-    // Check if the cart item already exists for the given product
-    const existingCartItem = await this.cartItemRepository.findOne({
+    let cartItem = await this.cartItemRepository.findOne({
       where: {
         cart: { id: createCartItemDto.cartId },
         product: { id: createCartItemDto.productId },
       },
+      relations: ['product'],
     });
 
-    if (existingCartItem) {
-      throw new BadRequestException('Product Already Added in Cart');
+    if (cartItem) {
+      cartItem.quantity += 1;
     } else {
-      // If it doesn't exist, create a new cart item
       const cart = await this.cartRepository.findOne({
         where: { id: createCartItemDto.cartId },
       });
@@ -52,74 +50,80 @@ export class CartItemService {
         throw new BadRequestException('Cart not found');
       }
 
-      const cartItem = this.cartItemRepository.create({
-        cart: cart,
-        product: product,
+      cartItem = this.cartItemRepository.create({
+        cart,
+        product,
+        quantity: 1,
       });
-
-      return await this.cartItemRepository.save(cartItem);
     }
+
+    const savedItem = await this.cartItemRepository.save(cartItem);
+    return {
+      ...savedItem,
+      product, // Include the product details
+    };
   }
 
   async removeCartItem(removeCartItemDto: RemoveCartItemDto) {
     const { cartId, productId } = removeCartItemDto;
 
-    // 1. Find the cart item using cartId and productId
     const cartItem = await this.cartItemRepository.findOne({
       where: {
         cart: { id: cartId },
         product: { id: productId },
       },
+      relations: ['product'],
     });
 
     if (!cartItem) {
       throw new BadRequestException('Cart item not found');
     }
 
-    // 2. Remove the cart item if it exists
     await this.cartItemRepository.remove(cartItem);
 
-    // 3. Check if the cart has any remaining items
     const remainingItems = await this.cartItemRepository.find({
       where: { cart: { id: cartId } },
+      relations: ['product'],
     });
 
     if (remainingItems.length === 0) {
-      // 4. If the cart is empty, delete the cart itself
       await this.cartRepository.delete(cartId);
       return {
         message: 'Cart item removed, and cart deleted because it is now empty',
       };
     }
 
-    return { message: 'Cart item removed successfully' };
+    return {
+      message: 'Cart item removed successfully',
+      remainingItems,
+    };
   }
 
   async updateCartItemQuantity(updateCartItemDto: UpdateCartItemDto) {
     const { cartId, productId, quantity } = updateCartItemDto;
-    // Find the cart item based on the cartId and productId
+
     const cartItem = await this.cartItemRepository.findOne({
       where: {
         cart: { id: cartId },
         product: { id: productId },
       },
+      relations: ['product'],
     });
 
     if (!cartItem) {
       throw new NotFoundException('Product not found in the cart.');
     }
 
-    // Update the quantity of the cart item
     cartItem.quantity = quantity;
+    const updatedItem = await this.cartItemRepository.save(cartItem);
 
-    // Save the updated cart item
-    await this.cartItemRepository.save(cartItem);
-
-    // Return the updated cart item
-    return cartItem;
+    return {
+      ...updatedItem,
+      product: cartItem.product, // Include product details
+    };
   }
+
   async cleanCartItem(cartId: number): Promise<void> {
-    // Step 1: Remove all cart items for the given cartId
     await this.cartItemRepository.delete({ cart: { id: cartId } });
   }
 }
