@@ -15,6 +15,9 @@ import { CartModule } from './cart/cart.module';
 
 import { CartItem } from './cart-item/entities/cart-item.entity';
 import { Product } from './product/product.entity';
+import { CartItemsModule } from './cart-items/cart-items.module';
+import { Review } from './reviews/review.entity';
+import { ReviewModule } from './reviews/reviews.module';
 
 
 // Charger les variables d'environnement depuis .env
@@ -29,13 +32,14 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      entities: [User, Profile, ],
-      synchronize: true,
+
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'root123',
+      database: 'authentification',
+      entities: [User, Profile , Review],
+
       autoLoadEntities: true,
       logging: true,
       // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -48,7 +52,9 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     }),
     UserModule,
     ProductsModule,
-    CartModule
+    CartModule,
+    CartItemsModule,
+    ReviewModule,
   ],
   controllers: [UserController],
   providers: [UserService, JwtStrategy],
