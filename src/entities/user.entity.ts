@@ -1,6 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { UserRoleEnum } from 'src/enums/user.enum';
 import { Profile } from './profile.entity';
+import { Cart } from 'src/cart/entities/cart.entity';
 import { Review } from '../reviews/review.entity';
 
 @Entity('users')
@@ -9,7 +18,7 @@ export class User {
   id: number;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
-    name: string;
+  name: string;
 
   @Column({ unique: true })
   email: string;
@@ -30,6 +39,10 @@ export class User {
   @OneToOne(() => Profile, { cascade: true })
   @JoinColumn()
   profile: Profile; // Relation un-à-un avec le profil
+
+
+  @OneToOne(() => Cart, (cart) => cart.user, { cascade: true })
+  cart: Cart;
 
   
 

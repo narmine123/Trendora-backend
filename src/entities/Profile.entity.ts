@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { User } from './user.entity';
 
 @Entity()
@@ -7,16 +15,16 @@ export class Profile {
   id: number;
 
   @Column()
-  numerotelephone: number ;
+  numerotelephone: number;
 
   @Column()
   nationality: string;
 
   @Column()
-  birthdate: Date ;
+  birthdate: Date;
 
   @Column()
-  age: number ;
+  age: number;
 
   @Column()
   ville: string;
@@ -24,8 +32,6 @@ export class Profile {
   @Column()
   adresselivraison: string;
 
-  @OneToOne(() => User, user => user.profile)
-  user: User;  // Relation un-à-un avec l'utilisateur
+  @OneToOne(() => User, (user) => user.profile)
+  user: User; // Relation un-à-un avec l'utilisateur
 }
- 
-

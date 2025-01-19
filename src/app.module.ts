@@ -9,7 +9,12 @@ import { JwtStrategy } from './strategy/passport-jwt.strategy';
 import { UserController } from './user.controller';
 import { ConfigModule } from '@nestjs/config';
 import { Profile } from './entities/profile.entity';
+import { ProductsModule} from './product/products.module';
+import { Cart } from './cart/entities/cart.entity';
 import { CartModule } from './cart/cart.module';
+
+import { CartItem } from './cart-item/entities/cart-item.entity';
+import { Product } from './product/product.entity';
 import { CartItemsModule } from './cart-items/cart-items.module';
 import { Review } from './reviews/review.entity';
 import { ReviewModule } from './reviews/reviews.module';
@@ -27,23 +32,26 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
+
       host: 'localhost',
       port: 3306,
       username: 'root',
       password: 'root123',
       database: 'authentification',
       entities: [User, Profile , Review],
+
       autoLoadEntities: true,
+      logging: true,
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       driver: require('mysql2'),
-      synchronize: true,
-      //dropSchema: true, // Supprime les tables avant de recréer le schéma
     }),
-    TypeOrmModule.forFeature([User, Profile]),
+    TypeOrmModule.forFeature([User, Profile,Product,Cart,CartItem]),
     JwtModule.register({
       secret: process.env.JWT_SECRET, // Utilisez la clé secrète depuis les variables d'environnement
       signOptions: { expiresIn: 3600 }, // Option d'expiration
     }),
     UserModule,
+    ProductsModule,
     CartModule,
     CartItemsModule,
     ReviewModule,
