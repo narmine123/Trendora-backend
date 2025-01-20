@@ -15,6 +15,9 @@ import { CartModule } from './cart/cart.module';
 
 import { CartItem } from './cart-item/entities/cart-item.entity';
 import { Product } from './product/product.entity';
+import { CartItemsModule } from './cart-items/cart-items.module';
+import { Review } from './reviews/review.entity';
+import { ReviewModule } from './reviews/reviews.module';
 
 
 // Charger les variables d'environnement depuis .env
@@ -34,7 +37,7 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Profile, Product],
+      entities: [User, Profile, Product, Review],
       synchronize: true,
       autoLoadEntities: true,
       logging: true,
@@ -48,7 +51,9 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     }),
     UserModule,
     ProductsModule,
-    CartModule
+    CartModule,
+    CartItemsModule,
+    ReviewModule,
   ],
   controllers: [UserController],
   providers: [UserService, JwtStrategy],

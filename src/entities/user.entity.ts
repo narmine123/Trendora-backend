@@ -10,6 +10,7 @@ import {
 import { UserRoleEnum } from 'src/enums/user.enum';
 import { Profile } from './profile.entity';
 import { Cart } from 'src/cart/entities/cart.entity';
+import { Review } from '../reviews/review.entity';
 
 @Entity('users')
 export class User {
@@ -39,6 +40,13 @@ export class User {
   @JoinColumn()
   profile: Profile; // Relation un-à-un avec le profil
 
+
   @OneToOne(() => Cart, (cart) => cart.user, { cascade: true })
   cart: Cart;
+
+  
+
+@OneToMany(() => Review, (review) => review.user)
+reviews: Review[];
+
 }
