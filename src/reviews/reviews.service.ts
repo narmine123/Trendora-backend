@@ -7,10 +7,10 @@ import {
   import { CreateReviewDto } from './dto/create-review.dto';
   import { UpdateReviewDto } from './dto/update-review.dto';
   import { InjectRepository } from '@nestjs/typeorm';
-  import { Product } from '../products/product.entity'; // Updated path
+  import { Product } from 'src/product/product.entity'; // Updated path
   import { Review } from './review.entity';
   import { Repository } from 'typeorm';
-  import { OrderService } from '../orders/order.service'; // Updated path
+  import { OrderService } from 'src/order/order.service'; // Updated path
   import { User } from '../entities/user.entity'; // Updated path
   
   @Injectable()
