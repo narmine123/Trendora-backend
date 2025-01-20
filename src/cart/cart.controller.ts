@@ -23,15 +23,12 @@ export class CartController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
-
   async getUserCart(@CurrentUser() user: User) {
     return await this.cartService.getUserCart(user);
   }
 
   @Post('add')
   @UseGuards(AuthGuard('jwt'))
-
-
   async addToCart(
     @Body() createCartItemDto: CreateCartDto,
     @CurrentUser() user: User,
@@ -41,7 +38,6 @@ export class CartController {
 
   @Delete('remove')
   @UseGuards(AuthGuard('jwt'))
-
   async removeFromCart(
     @Body() removeCartDto: RemoveFromCartDTO,
     @CurrentUser() user: User,
@@ -51,11 +47,19 @@ export class CartController {
 
   @Patch('update')
   @UseGuards(AuthGuard('jwt'))
-
   async updateItemQuantityFromCart(
     @Body() updateCartDto: UpdateCartDto,
     @CurrentUser() user: User,
   ) {
     return this.cartService.updateCart(updateCartDto, user);
   }
+
+  @Delete('clear')
+  @UseGuards(AuthGuard('jwt'))
+  async clearCart(@CurrentUser() user: User) {
+    await this.cartService.clearCart(user.id);
+    return { message: 'Cart cleared successfully' };
+  }
+
+  
 }
