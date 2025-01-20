@@ -11,7 +11,7 @@ describe('ProductsController', () => {
       controllers: [ProductsController],
       providers: [
         {
-          provide: ProductsService,  // ✅ Mock ProductsService
+          provide: ProductsService, // ✅ Mock ProductsService
           useValue: {
             getAllProducts: jest.fn(),
             getProductById: jest.fn(),
@@ -30,4 +30,3 @@ describe('ProductsController', () => {
     expect(controller).toBeDefined();
   });
 });
-

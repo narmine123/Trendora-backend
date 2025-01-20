@@ -9,7 +9,7 @@ import { JwtStrategy } from './strategy/passport-jwt.strategy';
 import { UserController } from './user.controller';
 import { ConfigModule } from '@nestjs/config';
 import { Profile } from './entities/profile.entity';
-import { ProductsModule} from './product/products.module';
+import { ProductsModule } from './product/products.module';
 import { Cart } from './cart/entities/cart.entity';
 import { CartModule } from './cart/cart.module';
 
@@ -34,7 +34,7 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Profile, ],
+      entities: [User, Profile, Product],
       synchronize: true,
       autoLoadEntities: true,
       logging: true,
