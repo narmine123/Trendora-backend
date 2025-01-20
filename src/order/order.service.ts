@@ -18,4 +18,18 @@ export class OrderService {
   getOrders() {
     return this.orders; // Retourne toutes les commandes
   }
+  /**
+   * Checks if a user has purchased a specific product.
+   * @param userId - ID of the user
+   * @param productId - ID of the product
+   * @returns True if the user has purchased the product, false otherwise
+   */
+  hasPurchasedProduct(userId: number, productId: number): boolean {
+    // Simulated logic: Look for an order containing the product and matching the user ID
+    return this.orders.some(
+      (order) =>
+        order.userId === userId &&
+        order.products.some((product: any) => product.id === productId)
+    );
+  }
 }
