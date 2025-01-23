@@ -46,10 +46,11 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
       synchronize: true,
       autoLoadEntities: true,
       logging: true,
+    
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       driver: require('mysql2'),
     }),
-    TypeOrmModule.forFeature([User, Profile,Product,Cart,CartItem]),
+    TypeOrmModule.forFeature([User, Profile,Product,Cart,CartItem , Review]),
     JwtModule.register({
       secret: process.env.JWT_SECRET, // Utilisez la clé secrète depuis les variables d'environnement
       signOptions: { expiresIn: 3600 }, // Option d'expiration
@@ -63,6 +64,6 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
   controllers: [UserController, OrderController],
   providers: [UserService, JwtStrategy, OrderService ],
 
-  exports: [JwtStrategy],
+  exports: [JwtStrategy , TypeOrmModule],
 })
 export class AppModule {}
