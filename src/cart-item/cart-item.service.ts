@@ -86,12 +86,12 @@ export class CartItemService {
       relations: ['product'],
     });
 
-    if (remainingItems.length === 0) {
-      await this.cartRepository.delete(cartId);
-      return {
-        message: 'Cart item removed, and cart deleted because it is now empty',
-      };
-    }
+    // if (remainingItems.length === 0) {
+    //   await this.cartRepository.delete(cartId);
+    //   return {
+    //     message: 'Cart item removed, and cart deleted because it is now empty',
+    //   };
+    // }
 
     return {
       message: 'Cart item removed successfully',
