@@ -22,7 +22,7 @@ export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Get('all')
-  @UseGuards(AuthGuard('jwt'), ACGuard)
+  @UseGuards(AuthGuard('jwt'))
   @UseRoles({
     possession: 'any',
     action: 'read',
@@ -34,7 +34,7 @@ export class ReviewController {
   }
 
   @Get()
-  @UseGuards(AuthGuard('jwt'), ACGuard)
+  @UseGuards(AuthGuard('jwt'))
   @UseRoles({
     possession: 'own',
     action: 'read',
@@ -53,7 +53,7 @@ export class ReviewController {
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'), ACGuard)
+  @UseGuards(AuthGuard('jwt'))
   @UseRoles({
     possession: 'own',
     action: 'create',
@@ -66,7 +66,7 @@ export class ReviewController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'), ACGuard)
+  @UseGuards(AuthGuard('jwt'))
   @UseRoles({
     possession: 'any',
     action: 'delete',

@@ -36,17 +36,14 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     TypeOrmModule.forRoot({
       type: 'mysql',
 
-      
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      entities: [User, Profile,Product,Cart,CartItem, Review],
-      synchronize: true,
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'root123',
+      database: 'authentification',
+      entities: [User, Profile , Review],
       autoLoadEntities: true,
       logging: true,
-    
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       driver: require('mysql2'),
     }),
