@@ -85,13 +85,24 @@ export class CartItemService {
       where: { cart: { id: cartId } },
       relations: ['product'],
     });
+if (remainingItems.length === 0) {
+  setTimeout(
+    async () => {
+      // Re-check if the cart is still empty after 1 minute
+      const recheckedItems = await this.cartItemRepository.find({
+        where: { cart: { id: cartId } },
+      });
 
-    if (remainingItems.length === 0) {
-      await this.cartRepository.delete(cartId);
-      return {
-        message: 'Cart item removed, and cart deleted because it is now empty',
-      };
-    }
+      if (recheckedItems.length === 0) {
+        await this.cartRepository.delete(cartId);
+        console.log(
+          `Cart with ID ${cartId} has been deleted due to inactivity.`,
+        );
+      }
+    },
+    60 * 1000,
+  ); 
+}
 
     return {
       message: 'Cart item removed successfully',
