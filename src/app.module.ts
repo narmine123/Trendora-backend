@@ -21,6 +21,7 @@ import { CartItemsModule } from './cart-items/cart-items.module';
 
 import { Review } from './reviews/review.entity';
 import { ReviewModule } from './reviews/reviews.module';
+import { OrderModule } from './order/order.module';
 
 
 // Charger les variables d'environnement depuis .env
@@ -57,6 +58,7 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     CartModule,
     CartItemsModule,
     ReviewModule,
+    OrderModule,
   ],
   controllers: [UserController, OrderController],
   providers: [UserService, JwtStrategy, OrderService ],
