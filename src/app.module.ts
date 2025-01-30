@@ -17,11 +17,12 @@ import { CartModule } from './cart/cart.module';
 
 import { CartItem } from './cart-item/entities/cart-item.entity';
 import { Product } from './product/product.entity';
-import { CartItemsModule } from './cart-items/cart-items.module';
+import { CartItemModule } from './cart-item/cart-item.module';
 
 import { Review } from './reviews/review.entity';
-import { ReviewModule } from './reviews/reviews.module';
 import { OrderModule } from './order/order.module';
+import { ReviewsModule } from './reviews/reviews.module';
+
 
 
 // Charger les variables d'environnement depuis .env
@@ -36,19 +37,20 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root123',
-      database: 'authentification',
-      entities: [User, Profile , Review],
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      entities: [User, Profile,Product,Cart,CartItem, Review],
+      synchronize: true,
       autoLoadEntities: true,
       logging: true,
+    
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       driver: require('mysql2'),
     }),
-    TypeOrmModule.forFeature([User, Profile,Product,Cart,CartItem]),
+    TypeOrmModule.forFeature([User, Profile,Product,Cart,CartItem , Review]),
     JwtModule.register({
       secret: process.env.JWT_SECRET, // Utilisez la clé secrète depuis les variables d'environnement
       signOptions: { expiresIn: 3600 }, // Option d'expiration
@@ -56,13 +58,15 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     UserModule,
     ProductsModule,
     CartModule,
-    CartItemsModule,
-    ReviewModule,
+
     OrderModule,
+    CartItemModule,
+    ReviewsModule,
+
   ],
   controllers: [UserController, OrderController],
   providers: [UserService, JwtStrategy, OrderService ],
 
-  exports: [JwtStrategy],
+  exports: [JwtStrategy , TypeOrmModule],
 })
 export class AppModule {}

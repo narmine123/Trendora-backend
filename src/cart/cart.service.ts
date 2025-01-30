@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -113,4 +112,16 @@ export class CartService {
     await this.cartItemService.cleanCartItem(cart.id);
     await this.cartRepository.delete(cart.id);
   }
+
+  async clearCart(userId: number): Promise<void> {
+    const cart = await this.getUserCartEntity(userId);
+
+    if (!cart) {
+      throw new NotFoundException('Cart not found for this user.');
+    }
+
+    await this.cartItemService.cleanCartItem(cart.id);
+  }
+
+  
 }

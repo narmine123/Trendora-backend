@@ -1,5 +1,3 @@
-
-
 // import { Injectable, NotFoundException } from '@nestjs/common';
 
 // @Injectable()
@@ -48,44 +46,32 @@
 //     return this.customers.splice(index, 1);
 //   }
 // }
-import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { lastValueFrom } from 'rxjs';  
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Product } from './product.entity';
 
 @Injectable()
 export class ProductsService {
-  private readonly apiUrl = 'https://fakestoreapi.com/products';
+  constructor(
+    @InjectRepository(Product)
+    private readonly productRepository: Repository<Product>,
+  ) {}
 
-  constructor(private readonly httpService: HttpService) {}
-
-  // Get all products
   async getAllProducts(): Promise<Product[]> {
-    const response = await lastValueFrom(this.httpService.get(this.apiUrl));
-    return response.data;
+    return this.productRepository.find();
   }
 
-  // Get a single product by ID
   async getProductById(id: number): Promise<Product> {
-    const response = await lastValueFrom(
-      this.httpService.get(`${this.apiUrl}/${id}`),
-    );
-    return response.data;
+    return this.productRepository.findOne({ where: { id } });
   }
 
-  // Add a new product
   async addProduct(product: Product): Promise<Product> {
-    const response = await lastValueFrom(
-      this.httpService.post(this.apiUrl, product),
-    );
-    return response.data;
+    return this.productRepository.save(product);
   }
 
-  // Update an existing product
-  async updateProduct(id: number, product: Product): Promise<Product> {
-    const response = await lastValueFrom(
-      this.httpService.put(`${this.apiUrl}/${id}`, product),
-    );
-    return response.data;
+  async updateProduct(id: number, product: Partial<Product>): Promise<Product> {
+    await this.productRepository.update(id, product);
+    return this.productRepository.findOne({ where: { id } });
   }
 }
