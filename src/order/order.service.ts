@@ -5,7 +5,7 @@ import { CreateOrderDto } from './createOrder.dto';
 export class OrderService {
   private orders: any[] = []; // Simule une base de données
 
-  createOrder(createOrderDto: CreateOrderDto) {
+  async createOrder(createOrderDto: CreateOrderDto) {
     const order = {
       id: this.orders.length + 1,
       ...createOrderDto,
@@ -15,8 +15,13 @@ export class OrderService {
     return order; // Retourne la commande créée
   }
 
-  getOrders() {
-    return this.orders; // Retourne toutes les commandes
+
+  async getOrderById(id: string) {
+    return this.orders.find(order => order.id === id);
+  }
+
+  async getAllOrders() {
+    return this.orders;
   }
   /**
    * Checks if a user has purchased a specific product.
