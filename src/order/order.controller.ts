@@ -8,6 +8,7 @@ export class OrderController {
 
   @Post()
   async createOrder(@Body() createOrderDto: CreateOrderDto) {
+    console.log('Received order:', createOrderDto);
     return this.orderService.createOrder(createOrderDto);
   }
 
