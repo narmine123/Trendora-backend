@@ -40,6 +40,6 @@ export class Product {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Review, (review) => review.product)
+  @OneToMany(() => Review, (review) => review.product , { eager: true })
   reviews: Review[];
 }

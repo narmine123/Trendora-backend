@@ -1,10 +1,7 @@
 import {
-  ForbiddenException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
-  Inject,
-  forwardRef,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -25,7 +22,6 @@ export class ReviewService {
   async create(createReviewDto: CreateReviewDto, user: User): Promise<Review> {
     const { productId, rating, comment } = createReviewDto;
 
-    // Check if the product exists
     const product = await this.productRepository.findOne({
       where: { id: productId },
     });
@@ -33,14 +29,11 @@ export class ReviewService {
       throw new NotFoundException(`Product with ID ${productId} not found.`);
     }
 
-    // Verify if the user has purchased the product
-    
-    
     const review = this.reviewRepository.create({
       rating,
       comment,
-      user: { id: user.id }, // Set user relationship
-      product, // Set product relationship
+      user: { id: user.id },
+      product,
     });
 
     try {
