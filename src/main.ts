@@ -9,8 +9,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.enableCors({
-    origin: '*', // URL de votre frontend Angular
-    methods: 'GET,POST,PUT,DELETE,PATCH', // Méthodes HTTP autorisées
+    origin: 'http://localhost:4200', // URL de votre frontend Angular
+    methods: 'GET,HEAD,POST,PUT,DELETE,PATCH', // Méthodes HTTP autorisées
+    allowedHeaders: 'Content-Type,Authorization',
     credentials: true, // Si des cookies ou des sessions sont utilisés
   })
 
