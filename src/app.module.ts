@@ -20,8 +20,10 @@ import { Product } from './product/product.entity';
 import { CartItemModule } from './cart-item/cart-item.module';
 
 import { Review } from './reviews/review.entity';
+import { OrderModule } from './order/order.module';
 import { ReviewsModule } from './reviews/reviews.module';
 
+import { Order } from './order/order.entity';
 
 // Charger les variables d'environnement depuis .env
 dotenv.config();
@@ -40,7 +42,7 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Profile,Product,Cart,CartItem, Review],
+      entities: [User, Profile,Product,Cart,CartItem, Review, Order],
       synchronize: true,
       autoLoadEntities: true,
       logging: true,
@@ -48,7 +50,7 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       driver: require('mysql2'),
     }),
-    TypeOrmModule.forFeature([User, Profile,Product,Cart,CartItem , Review]),
+    TypeOrmModule.forFeature([User, Profile,Product,Cart,CartItem , Review, Order]),
     JwtModule.register({
       secret: process.env.JWT_SECRET, // Utilisez la clé secrète depuis les variables d'environnement
       signOptions: { expiresIn: 3600 }, // Option d'expiration
@@ -56,8 +58,11 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET); // Cela vous aidera à véri
     UserModule,
     ProductsModule,
     CartModule,
+
+    OrderModule,
     CartItemModule,
     ReviewsModule,
+
   ],
   controllers: [UserController, OrderController],
   providers: [UserService, JwtStrategy, OrderService ],
