@@ -16,7 +16,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express'; // Import Request type from Express
 
 @ApiTags('reviews') // Tag for grouping in Swagger
-@Controller('review')
+@Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
