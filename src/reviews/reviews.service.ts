@@ -32,8 +32,6 @@ export class ReviewService {
     if (!product) {
       throw new NotFoundException(`Product with ID ${productId} not found.`);
     }
-
-    // Verify if the user has purchased the product
     
     
     const review = this.reviewRepository.create({
